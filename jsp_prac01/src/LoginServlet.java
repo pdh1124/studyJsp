@@ -16,13 +16,16 @@ public class LoginServlet extends HttpServlet {
 		super();
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	protected void doGet(HttpServletRequest request/*요청*/, HttpServletResponse response/*응답*/)
 			throws ServletException, IOException {
 		//코드 수정함
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		
-		String id = request.getParameter("id");
+		//요청에 대한 처리.
+		String id = request.getParameter("id"); 
 		String passwd = request.getParameter("passwd");
+		
+		//응답 화면 만들기
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
 		out.println("아이디=" + id + "<br>");
