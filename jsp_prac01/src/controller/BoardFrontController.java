@@ -14,7 +14,7 @@ import vo.ActionForward;
 
 @WebServlet("*.bo") // /BoardFrontController를 *.bo로 수정
 //*은 이름에 상관없이 .bo가 붙으면 처리해 주겠다.
-public class BoardFrontController extends HttpServlet {
+public class BoardFrontController extends HttpServlet { //extends HttpServlet (톰캣 파일에 있는 servlet-api.jar)를 상속 받음, 자바 확장 기능을 모두 상속받음, 뭔지는 잘 모름. 
 	private static final long serialVersionUID = 1L;
        
 
@@ -22,14 +22,17 @@ public class BoardFrontController extends HttpServlet {
         super();
 
     }
-
+    
+    //원래는 method형식으로 get과 post 형식이 있는데
+    
+    //get 형식으로 받을때
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		doProcess(request,response);
 	}
 
-
+	//post 형식으로 받을때
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		//doGet(request, response);

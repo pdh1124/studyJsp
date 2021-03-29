@@ -5,7 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="./css/common.css">
+<link rel="stylesheet" href="./css/common.css"><!-- 상대기준 : 서버가 상대경로를 선호하는 이유, 개발 컴퓨터와 호스팅 서버는 다른 컴퓨터다. -->
+<!--<link rel="stylesheet" href="http://localhost:9090/jsp_prac01/css/common.css">--> <!-- 절대경로 : 사용을 잘 안함 -->
 </head>
 <body>
 
