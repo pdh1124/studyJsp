@@ -1,6 +1,7 @@
 package db;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -53,6 +54,15 @@ public class JdbcUtil {
 		}
 	}
 	
+	//실행된 쿼리문의 결과를 담는 ResultSet
+	public static void close(ResultSet rs) {
+		try {
+			rs.close();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
 	
 	//쿼리문 실행 완료.
 	public static void commit(Connection con) {

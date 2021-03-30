@@ -2,6 +2,8 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import javax.sql.DataSource;
 
@@ -70,5 +72,45 @@ public class BoardDAO { //오라클에 쿼리문을 전달하는 역할을 할 �
 		}
 		
 		return insertCount;		
+	}
+
+	public ArrayList<BoardBean> selectArticleList() {
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null; //쿼리 수행 결과 얻어지는 여러개의 집합을 가르킴 (ResultSet : 결과 집합)
+		String sql = "select * from (select p.*, row_number() over (order by board_re_ref desc, board_re_seq) as rnum from board p) ";
+		
+		//System.out.println("sql: "+ sql);
+		ArrayList<BoardBean> aList = new ArrayList<>(); //sql에 게시물들을 ArrayList에 차곡차곡 가져 온다.
+		BoardBean bRow = null;
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery(); //select
+			
+			while(rs.next()) {
+				bRow = new BoardBean(); 
+				bRow.setBOARD_NUM(rs.getInt("board_num"));
+				bRow.setBOARD_NAME(rs.getString("board_name"));
+				bRow.setBOARD_SUBJECT(rs.getString("board_subject"));
+				bRow.setBOARD_CONTENT(rs.getString("board_content"));
+				bRow.setBOARD_FILE(rs.getString("board_file"));
+				bRow.setBOARD_RE_REF(rs.getInt("board_re_ref"));
+				bRow.setBOARD_RE_LEV(rs.getInt("board_re_lev"));
+				bRow.setBOARD_RE_SEQ(rs.getInt("board_re_seq"));
+				bRow.setBOARD_READCOUNT(rs.getInt("board_readcount"));
+				bRow.setBOARD_DATE(rs.getDate("board_date"));
+				
+				aList.add(bRow);
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
+		
+		return aList;
 	}
 }
