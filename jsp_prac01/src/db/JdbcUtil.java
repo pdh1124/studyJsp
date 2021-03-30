@@ -26,6 +26,7 @@ public class JdbcUtil {
 		//오라클 자원에 연결할 수 있는 객체 생성.
 		conn = ds.getConnection();
 		//그 객체 ds를 통해서 오라클과 자바의 연결 다리를 생성. conn
+		conn.setAutoCommit(false); //자동 커밋하지 않음
 		
 		return conn;
 	}

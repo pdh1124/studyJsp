@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
+import action.BoardWriteProAction;
 import vo.ActionForward;
 
 @WebServlet("*.bo") // /BoardFrontController를 *.bo로 수정
@@ -68,6 +69,16 @@ public class BoardFrontController extends HttpServlet { //extends HttpServlet (�
 			//isRedirect= false, path=null
 			forward.setPath("/board/qna_board_write.jsp"); //이동 url 지정
 			//게시물 등록 양식만 보여줌.
+		} 
+		//boardWritePro.bo에 대한 처리
+		else if(command.equals("/boardWritePro.bo")) { // /boardWritePro.bo 경로에 요청이 온다면
+			//게시물 쓰기 처리(process)
+			action = new BoardWriteProAction();
+			try {
+				forward = action.execute(req, response);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
 		if(forward != null) { //위에서 forward 객체를 생성하면
