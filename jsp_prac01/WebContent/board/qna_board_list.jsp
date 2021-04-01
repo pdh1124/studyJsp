@@ -36,6 +36,31 @@
 		</table>
 	</section>
 	
+	<!-- ◀ 버튼 기능 -->
+	<section id="pageList">
+		<c:if test="${pageInfo.page > 1 && pageInfo.startPage > 1 }">
+			<a href="boardList.bo?page=${pageInfo.page-((pageInfo.page-1)%5+1) }">◀</a>
+		</c:if>
+	</section>
+	<!-- 1~5를 나타내는 페이지가 아니라면 ◀ 표시. -->
+	
+	
+	<!-- 페이징 숫자 기능 -->
+	<c:forEach var="a" begin="${pageInfo.startPage }" end="${pageInfo.endPage }" step="1"> <!-- startPage에서 endPage까지 1씩늘어나며 반복 -->
+		<c:choose><!-- switch문 -->
+			<c:when test="${a==pageInfo.page }"><!-- case -->
+				<b>${a }</b><!-- 보여지는 페이지가 현재 페이지라면 링크를 걸지 않음. -->
+			</c:when>
+			<c:otherwise> <!-- defult -->
+				<a herf="boardList.bo?page=${a }">${a } </a>
+			</c:otherwise>
+		</c:choose>
+	</c:forEach>
+	
+	<!-- ▶ 버튼 기능 -->
+	<c:if test="${(pageInfo.page < pageInfo.maxPage) && (pageInfo.endPage < pageInfo.maxPage) || (pageInfo.endPage != pageInfo.maxPage) } ">
+		<a href="boardList.bo?page=${pageInfo.page+(6-(pageInfo.page-1)%5+1) }">▶</a>
+	</c:if>
 	
 </body>
 </html>
