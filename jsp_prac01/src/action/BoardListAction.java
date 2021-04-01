@@ -25,15 +25,16 @@ public class BoardListAction implements Action {
 		int page = 1; //현재 페이지 초기값.
 		int limit = 10; //페이지당 보여줄 게시물 수.
 		
-//		if(req.getParameter("page") != null) {//페이지가 널이 아니라면 
-//			page = Integer.parseInt(req.getParameter("page")); //변수 page에 값 할당.
-//			//처음에 페이지가 1이고 사용자가 2를 눌렀을때 2를 가져와 2페이지를 보겠다고 의식
-//		}
+		if(req.getParameter("page") != null) {//페이지가 널이 아니라면 
+			page = Integer.parseInt(req.getParameter("page")); //변수 page에 값 할당.
+			//처음에 페이지가 1이고 사용자가 2를 눌렀을때 2를 가져와 2페이지를 보겠다고 의식
+		}
 		
 		BoardListService bService = new BoardListService();
 		articleList = bService.getArticleList(page,limit); //매개변수 page와 limit를 가져온다.
 		
 		int listCount = bService.getListCount(); 
+		System.out.println("listCount :"+listCount);
 		//총 게시물 확인( 총 게시물에 따라서 페이징의 수를 결정함 예를 들어 게시물이 12개가 있는데 페이징에 10페이지까지 있으면 안되기 때문)
 		int maxPage = (int) ((double) listCount / limit + 0.9);
 		//예를 들어서 161개의 총게시물이 있다면,
@@ -63,6 +64,9 @@ public class BoardListAction implements Action {
 		}
 		
 		
+//		System.out.println("page :"+page);
+//		System.out.println("maxPage :"+maxPage);
+//		System.out.println("endPage :"+endPage);
 		PageInfo pageInfo = new PageInfo();
 		pageInfo.setPage(page);
 		pageInfo.setListCount(listCount);

@@ -144,7 +144,7 @@ public class BoardDAO { //오라클에 쿼리문을 전달하는 역할을 할 �
 			JdbcUtil.close(pstmt);
 		}
 				
-		
+		//System.out.println("dao_listCount:"+listCount);
 		return listCount;
 	}
 }

@@ -31,6 +31,6 @@ public class BoardListService {
 		int listCount = 0;
 		listCount = bDAO.selectListCount();
 		JdbcUtil.close(con);
-		return 0;
+		return listCount;
 	}
 }
