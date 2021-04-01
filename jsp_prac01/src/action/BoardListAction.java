@@ -25,10 +25,10 @@ public class BoardListAction implements Action {
 		int page = 1; //현재 페이지 초기값.
 		int limit = 10; //페이지당 보여줄 게시물 수.
 		
-		if(req.getParameter("page") != null) {//페이지가 널이 아니라면 
-			page = Integer.parseInt(req.getParameter("page")); //변수 page에 값 할당.
-			//처음에 페이지가 1이고 사용자가 2를 눌렀을때 2를 가져와 2페이지를 보겠다고 의식
-		}
+//		if(req.getParameter("page") != null) {//페이지가 널이 아니라면 
+//			page = Integer.parseInt(req.getParameter("page")); //변수 page에 값 할당.
+//			//처음에 페이지가 1이고 사용자가 2를 눌렀을때 2를 가져와 2페이지를 보겠다고 의식
+//		}
 		
 		BoardListService bService = new BoardListService();
 		articleList = bService.getArticleList(page,limit); //매개변수 page와 limit를 가져온다.
@@ -64,10 +64,10 @@ public class BoardListAction implements Action {
 		
 		
 		PageInfo pageInfo = new PageInfo();
-		pageInfo.setEndPage(endPage);
+		pageInfo.setPage(page);
 		pageInfo.setListCount(listCount);
 		pageInfo.setMaxPage(maxPage);
-		pageInfo.setPage(endPage);
+		pageInfo.setEndPage(endPage);
 		pageInfo.setStartPage(startPage);
 		
 		req.setAttribute("pageInfo", pageInfo);	

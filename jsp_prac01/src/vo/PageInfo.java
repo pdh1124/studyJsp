@@ -7,11 +7,11 @@ public class PageInfo {
 	private int startPage; //한 화면에 보이는 시작 페이지
 	private int endPage; //한 화면에 보이는 끝 페이지
 	private int ListCount; //총 게시물 수
-	public int getPage() {
-		return page;
-	}
 	
 	//getter와 setter
+	public int getPage() {
+		return page;
+	}	
 	public void setPage(int page) {
 		this.page = page;
 	}

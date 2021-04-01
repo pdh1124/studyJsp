@@ -38,12 +38,21 @@ public class BoardDAO { //오라클에 쿼리문을 전달하는 역할을 할 �
 	public int insertArtcle(BoardBean article) {
 		PreparedStatement pstmt = null; 
 		//PreparedStatement : 자바에서 생성된 쿼리문을 db로 전달
+		/*
 		String sql = "insert into board values(" 
 		+ "(select nvl(max(board_num),0)+1 from "
 		+ "board),"
 		+ "?,?,?,?,?,(select nvl(max(board_num),0)+1 "
 		+ "from "
 		+ "board),?,?,?,sysdate)";
+		*/
+		
+		//게시물을 여러개 생성하기 위해 임시로 사용
+		String sql = "insert into board values(" 
+      	+ "seq_board.NEXTVAL,"
+      	+ "?,?,?,?,?,seq_board.NEXTVAL,?,?,?,sysdate)"; 
+		 
+		
 		//+ 는 길어서 줄바꿈 때문에 넣었다. 
 		//insert into board values((select nvl(max(board_num),0)+1 from "board),?,?,?,?,?,(select nvl(max(board_num),0)+1 from board),?,?,?,sysdate);
 		//nvl(max(board_num),0)+1 다음 게시물은 현재 마지막 게시물의 + 1
