@@ -15,7 +15,7 @@ public class BoardWriteProAction implements Action {
 	public ActionForward execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		ActionForward forward = null;
 		BoardBean boardBean = null;
-		//게시물의 작성 내용(제목, 내용, 작성자, 작성일 등등)을 담아서 이동할 객체.
+		// 게시물의 작성 내용(제목, 내용, 작성자, 작성일 등등)을 담아서 이동할 객체.
 		boardBean = new BoardBean();
 		boardBean.setBOARD_NAME(req.getParameter("BOARD_NAME"));
 		boardBean.setBOARD_PASS(req.getParameter("BOARD_PASS"));

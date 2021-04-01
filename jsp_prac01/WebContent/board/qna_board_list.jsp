@@ -23,9 +23,10 @@
 				<td>날짜</td>
 				<td>조회수</td>
 			</tr>
-			<c:forEach var="article" items="${articleList }">
+			<c:set var="i" value="0" /> <!-- i라는 변수에 0을 넣는다.  (var i = 0), 게시물 번호 관련 변수. -->
+			<c:forEach var="article" items="${articleList }"><!-- 자바의 향상된 for문 역할 -->
 					<tr align="center">
-						<td>${article.BOARD_NUM }</td>
+						<td>${article.BOARD_NUM }</td><!-- el 을 사용하면, 해당 필드의 getter 자동 호출 -->
 						<td>${article.BOARD_SUBJECT }</td>
 						<td>${article.BOARD_NAME }</td>
 						<td>${article.BOARD_DATE }</td>

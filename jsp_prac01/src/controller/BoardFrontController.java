@@ -83,7 +83,7 @@ public class BoardFrontController extends HttpServlet { //extends HttpServlet (�
 		}
 		//boardList.bo에 대한 처리 (게시물보기)
 		else if (command.equals("/boardList.bo")) {
-			//게시물 쓰기 처리(process)
+			//게시물 읽기 처리(process)
 			action = new BoardListAction();
 			try {
 				forward = action.execute(req, response);

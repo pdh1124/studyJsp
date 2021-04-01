@@ -113,4 +113,29 @@ public class BoardDAO { //오라클에 쿼리문을 전달하는 역할을 할 �
 		
 		return aList;
 	}
+	
+	
+	public int selectListCount() {
+		int listCount = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "select count(board_num) from board"; 
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				listCount = rs.getInt(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
+				
+		
+		return listCount;
+	}
 }
