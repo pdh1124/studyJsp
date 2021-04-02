@@ -15,7 +15,7 @@ public class BoardListService {
 		BoardDAO bDAO = BoardDAO.getInstance();
 		bDAO.setConnection(con);
 		
-		aList = bDAO.selectArticleList();
+		aList = bDAO.selectArticleList(page,limit);
 		JdbcUtil.close(con);
 		
 		return aList;

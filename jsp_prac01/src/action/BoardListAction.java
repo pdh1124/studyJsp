@@ -34,7 +34,7 @@ public class BoardListAction implements Action {
 		articleList = bService.getArticleList(page,limit); //매개변수 page와 limit를 가져온다.
 		
 		int listCount = bService.getListCount(); 
-		System.out.println("listCount :"+listCount);
+		//System.out.println("listCount :"+listCount);
 		//총 게시물 확인( 총 게시물에 따라서 페이징의 수를 결정함 예를 들어 게시물이 12개가 있는데 페이징에 10페이지까지 있으면 안되기 때문)
 		int maxPage = (int) ((double) listCount / limit + 0.9);
 		//예를 들어서 161개의 총게시물이 있다면,
