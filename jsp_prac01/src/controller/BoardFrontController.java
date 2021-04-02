@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
+import action.BoardDetailAction;
 import action.BoardListAction;
 import action.BoardWriteProAction;
 import vo.ActionForward;
@@ -81,10 +82,22 @@ public class BoardFrontController extends HttpServlet { //extends HttpServlet (�
 				e.printStackTrace();
 			}
 		}
-		//boardList.bo에 대한 처리 (게시물보기)
+		
+		//boardList.bo에 대한 처리 (게시물리스트보기)
 		else if (command.equals("/boardList.bo")) {
 			//게시물 읽기 처리(process)
 			action = new BoardListAction();
+			try {
+				forward = action.execute(req, response);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		//boardDetail.bo에 대한 처리 (게시물보기)
+		else if (command.equals("/boardDetail.bo")) {
+			//게시물 읽기 처리(process)
+			action = new BoardDetailAction();
 			try {
 				forward = action.execute(req, response);
 			} catch(Exception e) {

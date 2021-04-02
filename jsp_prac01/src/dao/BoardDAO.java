@@ -38,20 +38,20 @@ public class BoardDAO { //오라클에 쿼리문을 전달하는 역할을 할 �
 	public int insertArtcle(BoardBean article) {
 		PreparedStatement pstmt = null; 
 		//PreparedStatement : 자바에서 생성된 쿼리문을 db로 전달
-		/*
 		String sql = "insert into board values(" 
 		+ "(select nvl(max(board_num),0)+1 from "
 		+ "board),"
 		+ "?,?,?,?,?,(select nvl(max(board_num),0)+1 "
 		+ "from "
 		+ "board),?,?,?,sysdate)";
-		*/
+
 		
 		//게시물을 여러개 생성하기 위해 임시로 사용
+		/*
 		String sql = "insert into board values(" 
       	+ "seq_board.NEXTVAL,"
       	+ "?,?,?,?,?,seq_board.NEXTVAL,?,?,?,sysdate)"; 
-		 
+		*/
 		
 		//+ 는 길어서 줄바꿈 때문에 넣었다. 
 		//insert into board values((select nvl(max(board_num),0)+1 from "board),?,?,?,?,?,(select nvl(max(board_num),0)+1 from board),?,?,?,sysdate);
@@ -83,18 +83,26 @@ public class BoardDAO { //오라클에 쿼리문을 전달하는 역할을 할 �
 		return insertCount;		
 	}
 
-	public ArrayList<BoardBean> selectArticleList() {
+	public ArrayList<BoardBean> selectArticleList(int page, int limit) {
 
 		PreparedStatement pstmt = null;
 		ResultSet rs = null; //쿼리 수행 결과 얻어지는 여러개의 집합을 가르킴 (ResultSet : 결과 집합)
-		String sql = "select * from (select p.*, row_number() over (order by board_re_ref desc, board_re_seq) as rnum from board p) ";
+		String sql = "select * from (select p.*, row_number()"
+		+" over (order by board_re_ref desc, "
+		+"board_re_seq) as rnum from board p) "
+		+"where rnum between ? and ?"; 
+		//게시물의 추출이 조건이 없을때는 보여졌지만 
+		//조건을 주므로 해서 일부만 표시 (rum이 ?에서부터 ?에서까지 보여주겠다.)
 		
 		//System.out.println("sql: "+ sql);
 		ArrayList<BoardBean> aList = new ArrayList<>(); //sql에 게시물들을 ArrayList에 차곡차곡 가져 온다.
 		BoardBean bRow = null;
+		int startRow = (page - 1) * 10 + 1;// 읽기 시작할 row 번호.
 		
 		try {
 			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, startRow); //예) 2페이지, 11~20, 11
+			pstmt.setInt(2, page * limit); //예 2*10=20
 			rs = pstmt.executeQuery(); //select
 			
 			while(rs.next()) {
@@ -146,5 +154,66 @@ public class BoardDAO { //오라클에 쿼리문을 전달하는 역할을 할 �
 				
 		//System.out.println("dao_listCount:"+listCount);
 		return listCount;
+	}
+	
+	
+	//해당 게시물로 들어가서 readcount의 해당하는 부분을 1 증가해라
+	public int updateReadCount(int board_num) { 
+		PreparedStatement pstmt = null;
+		int cnt = 0;
+		String sql = "update board set board_readcount=" 
+		+ "board_readcount+1 where board_num=?";
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, board_num);
+			cnt = pstmt.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			JdbcUtil.close(pstmt);
+		}
+		
+		return cnt;
+	}
+	
+	//하나의 게시물을 가져와서 bRow의 객체에 담고 리턴한다.
+	public BoardBean selectArticle(int board_num) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		BoardBean bRow = null;
+		String sql = "select * from board where board_num=?"; 
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, board_num);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				bRow = new BoardBean();
+				bRow.setBOARD_NUM(rs.getInt("board_num"));
+				bRow.setBOARD_NAME(rs.getString("board_name"));
+				bRow.setBOARD_SUBJECT(rs.getString("board_subject"));
+				bRow.setBOARD_CONTENT(rs.getString("board_content"));
+				bRow.setBOARD_FILE(rs.getString("board_file"));
+				bRow.setBOARD_RE_REF(rs.getInt("board_re_ref"));
+				bRow.setBOARD_RE_LEV(rs.getInt("board_re_lev"));
+				bRow.setBOARD_RE_SEQ(rs.getInt("board_re_seq"));
+				bRow.setBOARD_READCOUNT(rs.getInt("board_readcount"));
+				bRow.setBOARD_DATE(rs.getDate("board_date"));
+				//게시물 목록 보기에도 동일한 코드 존재.
+				//객체 배열에 담는 부분만 빠졌음.
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
+		
+//		System.out.println(bRow.getBOARD_NAME());
+//		System.out.println(bRow.getBOARD_SUBJECT());
+//		System.out.println(bRow.getBOARD_CONTENT());
+		return bRow;
 	}
 }
