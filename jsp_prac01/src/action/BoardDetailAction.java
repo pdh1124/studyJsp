@@ -27,6 +27,7 @@ public class BoardDetailAction implements Action {
 		String str = null;
 		if (req.getParameter("str") != null) {
 			str = req.getParameter("str");
+			req.setAttribute("str", str);
 		}
 		
 		
