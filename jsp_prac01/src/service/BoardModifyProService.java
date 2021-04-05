@@ -23,7 +23,6 @@ public class BoardModifyProService {
 		return isArticleWriter;
 	}
 	
-	//
 	public boolean updateArticle(BoardBean article) throws Exception {
 		//커넥션을 얻어서 초기화 해주고,
 		boolean isModi = false;

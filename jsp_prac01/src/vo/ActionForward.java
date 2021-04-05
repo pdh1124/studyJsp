@@ -1,4 +1,4 @@
-package vo;
+package vo; //vo : value object
 
 public class ActionForward { //주소를 이동할때 공유할 값이 있는지 여부와 url 주소를 가져오기 위함
 	private boolean isRedirect = false;  //주소 이동 여부
