@@ -22,10 +22,27 @@ public class BoardModifyProService {
 		
 		return isArticleWriter;
 	}
-
-	public boolean updateArticle(BoardBean article) {
-		// TODO Auto-generated method stub
-		return false;
+	
+	//
+	public boolean updateArticle(BoardBean article) throws Exception {
+		//커넥션을 얻어서 초기화 해주고,
+		boolean isModi = false;
+		Connection con = JdbcUtil.getConnection();
+		BoardDAO bDAO = BoardDAO.getInstance();
+		bDAO.setConnection(con);
+		
+		//게시물 정보를 전달해서 디비 처리 할 메소드
+		int upCnt = bDAO.modifyArtcle(article); //디비 접근
+		
+		if(upCnt > 0) {
+			JdbcUtil.commit(con);
+			isModi = true;
+		} else {
+			JdbcUtil.rollback(con);
+		}
+		JdbcUtil.close(con);
+		
+		return isModi;
 	}
 
 }

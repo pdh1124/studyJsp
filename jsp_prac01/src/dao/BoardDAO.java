@@ -243,4 +243,25 @@ public class BoardDAO { //오라클에 쿼리문을 전달하는 역할을 할 �
 		
 		return isWriter;
 	}
+
+	public int modifyArtcle(BoardBean article) {
+		int upCnt = 0;
+		PreparedStatement pstmt = null;
+		String sql = "update board set board_subject=?, board_content=? where board_num=?";
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, article.getBOARD_SUBJECT());
+			pstmt.setString(2, article.getBOARD_CONTENT());
+			pstmt.setInt(3, article.getBOARD_NUM());
+			upCnt = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JdbcUtil.close(pstmt);
+		}
+		
+		
+		return upCnt;
+	}
 }

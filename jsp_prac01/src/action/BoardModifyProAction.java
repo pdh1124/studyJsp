@@ -1,6 +1,7 @@
 package action;
 
 import java.io.PrintWriter;
+import java.net.URLEncoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +26,8 @@ public class BoardModifyProAction implements Action {
 		boolean isRightUser = bmps.isArticleWriter(board_num, req.getParameter("BOARD_PASS"));
 		//비밀번호 일치 여부 boolean으로 리턴, true = 일치, false=불일치.
 		
+		ActionForward fo = null;
+		
 		if(!isRightUser) { //비밀번호가 틀리다면,
 			resp.setContentType("text/html;charset=utf-8");
 			PrintWriter out = resp.getWriter();
@@ -41,9 +44,33 @@ public class BoardModifyProAction implements Action {
 			//boardBean 객체에 폼에서 작성한 값을 저장하고,
 			//디비에 반영하기 위해서 updateArticle 호출.
 			boolean isModi = bmps.updateArticle(article);
+			
+			
+			if(!isModi) {
+				resp.setContentType("text/html;charset=utf-8");
+				PrintWriter out = resp.getWriter();
+				
+				out.println("<script>");
+				out.println("alert('수정 실패');");
+				out.println("history.back();");
+				out.println("</script>");	
+			} else {
+				//스크립트는 페이지에서만 동작.
+				// 그러므로, 페이지를 이동하고, 그 페이지에서 스크립트 동작하도록 str을 전달하고 있음
+				String str = "<script>" + "alert('수정 성공.');" + "</script>";
+				String encodedString = URLEncoder.encode(str, "UTF-8");
+				//바로 전송하면 한글의 경우 깨짐 발생.
+				//적절한 언어셋으로 변경하여 전송.
+				
+				fo = new ActionForward();
+				fo.setRedirect(true);
+				fo.setPath("boardDetail.bo?page=" + page + "&board_num="+ board_num + "&str=" + encodedString);
+			}
+			
+			
 		}
 		
-		return null;
+		return fo;
 	}
 
 }

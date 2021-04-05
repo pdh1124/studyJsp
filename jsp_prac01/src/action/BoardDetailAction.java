@@ -24,6 +24,12 @@ public class BoardDetailAction implements Action {
 		//서비스 객체를 통해서 getArticle 메소드를 호출하면서,
 		//게시물 번호 전달.
 		
+		String str = null;
+		if (req.getParameter("str") != null) {
+			str = req.getParameter("str");
+		}
+		
+		
 		ActionForward fo = new ActionForward();
 		req.setAttribute("article", article); //게시물 하나에 대한 정보
 		req.setAttribute("page", page); //페이지 정보

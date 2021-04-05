@@ -13,6 +13,7 @@ import action.Action;
 import action.BoardDetailAction;
 import action.BoardListAction;
 import action.BoardModifyFormAction;
+import action.BoardModifyProAction;
 import action.BoardWriteProAction;
 import vo.ActionForward;
 
@@ -119,6 +120,17 @@ public class BoardFrontController extends HttpServlet { //extends HttpServlet (�
 			}
 		}
 		
+		
+		//boardModifyPro.bo
+		else if (command.equals("/boardModifyPro.bo")) {
+			//게시물 읽기 처리(process)
+			action = new BoardModifyProAction();
+			try {
+				forward = action.execute(req, response);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
 		
 		if(forward != null) { //위에서 forward 객체를 생성하면
 			if(forward.isRedirect()) { //주소만 변경 하는 것, 전달값 없이 페이지 이동
