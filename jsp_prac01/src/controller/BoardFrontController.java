@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import action.Action;
 import action.BoardDetailAction;
 import action.BoardListAction;
+import action.BoardModifyFormAction;
 import action.BoardWriteProAction;
 import vo.ActionForward;
 
@@ -72,6 +73,7 @@ public class BoardFrontController extends HttpServlet { //extends HttpServlet (�
 			forward.setPath("/board/qna_board_write.jsp"); //이동 url 지정
 			//게시물 등록 양식만 보여줌.
 		} 
+		
 		//boardWritePro.bo에 대한 처리
 		else if(command.equals("/boardWritePro.bo")) { // /boardWritePro.bo 경로에 요청이 온다면
 			//게시물 쓰기 처리(process)
@@ -98,6 +100,18 @@ public class BoardFrontController extends HttpServlet { //extends HttpServlet (�
 		else if (command.equals("/boardDetail.bo")) {
 			//게시물 읽기 처리(process)
 			action = new BoardDetailAction();
+			try {
+				forward = action.execute(req, response);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		//boardModifyForm.bo
+		else if (command.equals("/boardModifyForm.bo")) {
+			//게시물 읽기 처리(process)
+			action = new BoardModifyFormAction();
 			try {
 				forward = action.execute(req, response);
 			} catch(Exception e) {

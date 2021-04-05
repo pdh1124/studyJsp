@@ -216,4 +216,31 @@ public class BoardDAO { //오라클에 쿼리문을 전달하는 역할을 할 �
 //		System.out.println(bRow.getBOARD_CONTENT());
 		return bRow;
 	}
+
+	public boolean isArticleBoardWriter(int board_num, String pass) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "select board_pass from board where board_num=?"; //패스워드 조회
+		boolean isWriter = false;
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, board_num);
+			rs = pstmt.executeQuery();
+			//쿼리문을 구동하여 결과를 rs(커서) 객체에 전달.
+			rs.next(); //실제값 가르키기
+			
+			//매개변수로 받은 pass와 매개변수로 받은 board_num이 일치하는 지 확인
+			if(pass.equals(rs.getString("board_pass"))) { 
+				isWriter = true;
+				//결과적으로 비밀번호가 맞다면 true, 틀리면 false 리턴.
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JdbcUtil.close(pstmt);
+		}
+		
+		return isWriter;
+	}
 }
