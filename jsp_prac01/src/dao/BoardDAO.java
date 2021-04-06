@@ -3,6 +3,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.sql.DataSource;
@@ -263,5 +264,62 @@ public class BoardDAO { //오라클에 쿼리문을 전달하는 역할을 할 �
 		
 		
 		return upCnt;
+	}
+	
+	//댓글 작성
+	public int insertReplyArticle(BoardBean article) {
+		//원글 답글,
+		//답글 답글,
+		//새로 쓰기도 하지만 끼워 넣기도 함.
+		PreparedStatement pstmt = null;
+		String sql ="";
+		int insertCount = 0;
+		int re_ref = article.getBOARD_RE_REF(); //참조
+		int re_lev = article.getBOARD_RE_LEV(); //들여쓰기
+		int re_seq = article.getBOARD_RE_SEQ(); //정렬 순서
+		
+		try {
+			sql = "update board set BOARD_RE_SEQ=BOARD_RE_SEQ+1 where BOARD_RE_REF=? and BOARD_RE_SEQ>?";
+			//이미 다른 답글이 있는 상태에서 참조가 같고,
+			//현재 선택한 게시물보다 순서가 크다면,
+			//순서값을 1씩 모두 증가
+			//결론은 댓글이 달린다면 뒤에 있는 게시물들은 1씩 밀려나는 것을 표현 
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, re_ref);
+			pstmt.setInt(2, re_seq);
+			int updateCount = pstmt.executeUpdate();
+			
+			//순서에 대한 정리
+			if(updateCount > 0) { 
+				JdbcUtil.commit(con); //디비에 변환값 반영.
+			}
+			JdbcUtil.close(pstmt);
+			
+			//
+			re_seq = re_seq + 1; //선택한 글보다 순서 1증가.
+			re_lev = re_lev + 1; //선택한 글보다 1칸더 들여쓰기.
+			sql = "insert into board values ((select nvl(max(board_num),0)+1 from board),?,?,?,?,?,?,?,?,?,sysdate)";
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setString(1, article.getBOARD_NAME());
+			pstmt.setString(2, article.getBOARD_PASS());
+			pstmt.setString(3, article.getBOARD_SUBJECT());
+			pstmt.setString(4, article.getBOARD_CONTENT());
+			pstmt.setString(5, ""); //답장은 파일 첨부 없음.
+			pstmt.setInt(6, re_ref);
+			pstmt.setInt(7, re_lev);
+			pstmt.setInt(8, re_seq);
+			pstmt.setInt(9, 0);
+			insertCount = pstmt.executeUpdate();
+			
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JdbcUtil.close(pstmt);
+		}
+		
+		return insertCount;
 	}
 }

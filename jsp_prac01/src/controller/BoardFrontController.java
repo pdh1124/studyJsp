@@ -10,10 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
+import action.BoardDeleteFormAction;
 import action.BoardDetailAction;
 import action.BoardListAction;
 import action.BoardModifyFormAction;
 import action.BoardModifyProAction;
+import action.BoardReplyFormAction;
+import action.BoardReplyProAction;
 import action.BoardWriteProAction;
 import vo.ActionForward;
 
@@ -125,6 +128,39 @@ public class BoardFrontController extends HttpServlet { //extends HttpServlet (�
 		else if (command.equals("/boardModifyPro.bo")) {
 			//게시물 읽기 처리(process)
 			action = new BoardModifyProAction();
+			try {
+				forward = action.execute(req, response);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		//boardReplyForm.bo
+		else if (command.equals("/boardReplyForm.bo")) {
+			//게시물 읽기 처리(process)
+			action = new BoardReplyFormAction();
+			try {
+				forward = action.execute(req, response);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		//boardReplyPro.bo
+		else if (command.equals("/boardReplyPro.bo")) {
+			//게시물 읽기 처리(process)
+			action = new BoardReplyProAction();
+			try {
+				forward = action.execute(req, response);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		//boardDeleteForm.bo
+		else if (command.equals("/boardDeleteForm.bo")) {
+			//게시물 읽기 처리(process)
+			action = new BoardDeleteFormAction();
 			try {
 				forward = action.execute(req, response);
 			} catch(Exception e) {

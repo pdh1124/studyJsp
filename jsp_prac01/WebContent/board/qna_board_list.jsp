@@ -27,7 +27,18 @@
 			<c:forEach var="article" items="${articleList }"><!-- 자바의 향상된 for문 역할 -->
 					<tr align="center">
 						<td>${article.BOARD_NUM }</td><!-- el 을 사용하면, 해당 필드의 getter 자동 호출 -->
-						<td><a href="boardDetail.bo?board_num=${article.BOARD_NUM}&page=${pageInfo.page }">${article.BOARD_SUBJECT }</a></td>
+						
+						<td align="left" style="padding-left:10px;">
+						<c:choose>
+							<c:when test="${article.BOARD_RE_LEV != 0 }">
+								<c:forEach var="a" begin="1" end="${article.BOARD_RE_LEV }" step="1">
+									&nbsp;&nbsp;
+								</c:forEach>┕
+							</c:when>
+						</c:choose>
+						<a href="boardDetail.bo?board_num=${article.BOARD_NUM}&page=${pageInfo.page }">${article.BOARD_SUBJECT }</a>
+						
+						</td>
 						<td>${article.BOARD_NAME }</td>
 						<td>${article.BOARD_DATE }</td>
 						<td>${article.BOARD_READCOUNT }</td>					

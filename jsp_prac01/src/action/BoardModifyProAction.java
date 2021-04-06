@@ -45,7 +45,7 @@ public class BoardModifyProAction implements Action {
 			//디비에 반영하기 위해서 updateArticle 호출.
 			boolean isModi = bmps.updateArticle(article);
 			
-			System.out.println(isModi);
+	
 			
 			if(!isModi) {
 				resp.setContentType("text/html;charset=utf-8");
@@ -63,13 +63,13 @@ public class BoardModifyProAction implements Action {
 				//바로 전송하면 한글의 경우 깨짐 발생.
 				//적절한 언어셋으로 변경하여 전송.
 				
-				System.out.println(str);
+		
 				
 				fo = new ActionForward();
 				fo.setRedirect(true);
 				fo.setPath("boardDetail.bo?page=" + page + "&board_num="+ board_num + "&str=" + encodedString);
 				
-				System.out.println(fo);
+				
 			}
 			
 			
