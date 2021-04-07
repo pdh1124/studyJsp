@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
 import action.BoardDeleteFormAction;
+import action.BoardDeleteProAction;
 import action.BoardDetailAction;
 import action.BoardListAction;
 import action.BoardModifyFormAction;
@@ -167,6 +168,19 @@ public class BoardFrontController extends HttpServlet { //extends HttpServlet (�
 				e.printStackTrace();
 			}
 		}
+		
+		//boardDeleteProForm.bo
+				else if (command.equals("/boardDeleteProForm.bo")) {
+					//게시물 읽기 처리(process)
+					action = new BoardDeleteProAction();
+					try {
+						forward = action.execute(req, response);
+					} catch(Exception e) {
+						e.printStackTrace();
+					}
+				}
+		
+		
 		
 		if(forward != null) { //위에서 forward 객체를 생성하면
 			if(forward.isRedirect()) { //주소만 변경 하는 것, 전달값 없이 페이지 이동

@@ -162,8 +162,7 @@ public class BoardDAO { //오라클에 쿼리문을 전달하는 역할을 할 �
 	public int updateReadCount(int board_num) { 
 		PreparedStatement pstmt = null;
 		int cnt = 0;
-		String sql = "update board set board_readcount=" 
-		+ "board_readcount+1 where board_num=?";
+		String sql = "update board set board_readcount=board_readcount+1 where board_num=?";
 		
 		try {
 			pstmt = con.prepareStatement(sql);
@@ -205,7 +204,7 @@ public class BoardDAO { //오라클에 쿼리문을 전달하는 역할을 할 �
 				//게시물 목록 보기에도 동일한 코드 존재.
 				//객체 배열에 담는 부분만 빠졌음.
 			}
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			JdbcUtil.close(rs);
@@ -321,5 +320,25 @@ public class BoardDAO { //오라클에 쿼리문을 전달하는 역할을 할 �
 		}
 		
 		return insertCount;
+	}
+	
+	
+	//삭제
+	public int deleteArtcle(BoardBean article) {
+		int upCnt = 0;
+		PreparedStatement pstmt = null;
+		String sql = "delete from BOARD where BOARD_NUM=?";
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, article.getBOARD_NUM());
+			upCnt = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JdbcUtil.close(pstmt);
+		}
+		
+		return upCnt;
 	}
 }
