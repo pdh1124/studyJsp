@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
-import action.BoardDeleteFormAction;
 import action.BoardDeleteProAction;
 import action.BoardDetailAction;
 import action.BoardListAction;
@@ -160,26 +159,29 @@ public class BoardFrontController extends HttpServlet { //extends HttpServlet (�
 		
 		//boardDeleteForm.bo
 		else if (command.equals("/boardDeleteForm.bo")) {
+			//게시물 삭제후에 보던 페이지로 이동.(그럼 페이지라는 값이 물려 가야 한다)
+			//어떤 게시물의 비밀번호인지 확인하기 위한 게시물 번호도 전달
+			int board_num = Integer.parseInt(req.getParameter("board_num"));
+			String page = req.getParameter("page");
+			req.setAttribute("board_num", board_num);
+			req.setAttribute("page", page);
+			//삭제 하려는 사람이 비밀번호를 알고 있는가?
+			//사용자에게 비밀번호 유도.
+			forward = new ActionForward();
+			//링크만 시켜주면 됨
+			forward.setPath("/board/qna_board_delete.jsp");
+		}
+				
+		//boardDeletePro.bo
+		else if (command.equals("/boardDeletePro.bo")) {
 			//게시물 읽기 처리(process)
-			action = new BoardDeleteFormAction();
+			action = new BoardDeleteProAction();
 			try {
 				forward = action.execute(req, response);
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
 		}
-		
-		//boardDeleteProForm.bo
-				else if (command.equals("/boardDeleteProForm.bo")) {
-					//게시물 읽기 처리(process)
-					action = new BoardDeleteProAction();
-					try {
-						forward = action.execute(req, response);
-					} catch(Exception e) {
-						e.printStackTrace();
-					}
-				}
-		
 		
 		
 		if(forward != null) { //위에서 forward 객체를 생성하면

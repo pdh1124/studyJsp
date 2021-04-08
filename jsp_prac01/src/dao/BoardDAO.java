@@ -40,12 +40,12 @@ public class BoardDAO { //오라클에 쿼리문을 전달하는 역할을 할 �
 		PreparedStatement pstmt = null; 
 		//PreparedStatement : 자바에서 생성된 쿼리문을 db로 전달
 		String sql = "insert into board values(" 
-		+ "(select nvl(max(board_num),0)+1 from "
-		+ "board),"
-		+ "?,?,?,?,?,(select nvl(max(board_num),0)+1 "
-		+ "from "
-		+ "board),?,?,?,sysdate)";
-
+		+ "(select nvl(max(board_num),0)+1 from board),"
+		+ "?,?,?,?,?,(select nvl(max(board_num),0)+1 from board),?,?,?,sysdate)";
+		//+ 는 길어서 줄바꿈 때문에 넣었다. 
+		//insert into board values((select nvl(max(board_num),0)+1 from "board),?,?,?,?,?,(select nvl(max(board_num),0)+1 from board),?,?,?,sysdate);
+		//nvl(max(board_num),0)+1 다음 게시물은 현재 마지막 게시물의 + 1
+		
 		
 		//게시물을 여러개 생성하기 위해 임시로 사용
 		/*
@@ -53,10 +53,7 @@ public class BoardDAO { //오라클에 쿼리문을 전달하는 역할을 할 �
       	+ "seq_board.NEXTVAL,"
       	+ "?,?,?,?,?,seq_board.NEXTVAL,?,?,?,sysdate)"; 
 		*/
-		
-		//+ 는 길어서 줄바꿈 때문에 넣었다. 
-		//insert into board values((select nvl(max(board_num),0)+1 from "board),?,?,?,?,?,(select nvl(max(board_num),0)+1 from board),?,?,?,sysdate);
-		//nvl(max(board_num),0)+1 다음 게시물은 현재 마지막 게시물의 + 1
+
 		//시퀀스를 대신하는 서브쿼리 이용.
 		int insertCount = 0;
 
@@ -321,24 +318,23 @@ public class BoardDAO { //오라클에 쿼리문을 전달하는 역할을 할 �
 		
 		return insertCount;
 	}
-	
-	
-	//삭제
-	public int deleteArtcle(BoardBean article) {
-		int upCnt = 0;
+
+	public int deleteArtcle(int board_num) {
 		PreparedStatement pstmt = null;
-		String sql = "delete from BOARD where BOARD_NUM=?";
+		String board_delete_sql = "delete from BOARD where BOARD_NUM=?";
+		int deleteCount = 0;
 		
 		try {
-			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, article.getBOARD_NUM());
-			upCnt = pstmt.executeUpdate();
+			pstmt = con.prepareStatement(board_delete_sql);
+			pstmt.setInt(1, board_num);
+			deleteCount = pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			JdbcUtil.close(pstmt);
 		}
 		
-		return upCnt;
+		return deleteCount;
 	}
+	
 }
