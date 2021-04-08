@@ -26,7 +26,18 @@
 			<c:set var="i" value="0" /> <!-- i라는 변수에 0을 넣는다.  (var i = 0), 게시물 번호 관련 변수. -->
 			<c:forEach var="article" items="${articleList }"><!-- 자바의 향상된 for문 역할 -->
 					<tr align="center">
-						<td>${article.BOARD_NUM }</td><!-- el 을 사용하면, 해당 필드의 getter 자동 호출 -->
+						<td>
+						
+						<c:choose>
+							<c:when test="${pageInfo.page==1 }">
+								${pageInfo.listCount-i }
+							</c:when>
+							<c:otherwise>
+								${pageInfo.listCount-((pageInfo.page-1)*10)-i }
+							</c:otherwise>
+						</c:choose>
+						
+						</td><!-- el 을 사용하면, 해당 필드의 getter 자동 호출 -->
 						
 						<td align="left" style="padding-left:10px;">
 						<c:choose>
@@ -43,6 +54,7 @@
 						<td>${article.BOARD_DATE }</td>
 						<td>${article.BOARD_READCOUNT }</td>					
 					</tr>
+					<c:set var="i" value="${i+1 }" />
 			</c:forEach>
 		</table>
 	</section>
