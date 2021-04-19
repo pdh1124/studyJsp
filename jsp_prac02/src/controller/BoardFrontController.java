@@ -1,8 +1,8 @@
 package controller;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,7 +13,7 @@ import action.Action;
 import vo.ActionForward;
 
 
-@WebServlet("/BoardFrontController")
+@WebServlet("*.bo")
 public class BoardFrontController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -40,5 +40,30 @@ public class BoardFrontController extends HttpServlet {
 		
 		ActionForward forward = null;
 		Action action = null;
+	
+		if(command.equals("/boardWriterForm.bo")) {
+			forward = new ActionForward();
+			forward.setPath("/board/qna_board_write.jsp");
+		}
+		
+		else if(command.equals("/boardWritePro.bo")) {
+			action = new BoardWriterProAction();
+			try {
+				forward = action.execute(req, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if(forward != null) {
+			if(forward.isRedirect()) {
+				response.sendRedirect(forward.getPath());
+			} else {
+				RequestDispatcher dispatcher = req.getRequestDispatcher(forward.getPath());
+				dispatcher.forward(req, response);
+			}
+		}
 	}
+	
+	
 }
